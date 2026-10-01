@@ -1,0 +1,16 @@
+# Enterprise Knowledge Base: Multi-Agent Systems & RAG Architectures
+
+## Section 1: Limitations of Naive RAG
+Standard Retrieval-Augmented Generation (Naive RAG) operates sequentially: (1) Query Embedding -> (2) Top-K Similarity Search -> (3) Prompt Concatenation -> (4) Response Generation. This linear pipeline suffers from significant failure modes:
+1. Low Precision Retrieval: Similarity search often retrieves contextually irrelevant or distractor chunks.
+2. Context Blindness: If the knowledge base does not contain the answer, the LLM hallucinates rather than refusing.
+3. Information Distortion: Middle chunks in long contexts suffer from the 'Lost in the Middle' phenomenon.
+
+## Section 2: Self-Reflective Corrective RAG (CRAG)
+Corrective RAG introduces self-corrective decision nodes:
+- Document Evaluator: Each candidate document is graded for semantic relevance.
+- Web Fallback: If relevance falls below confidence threshold gamma = 0.6, the system branches into external search.
+- Knowledge Refinement: Strip irrelevant sentences before synthesis.
+
+## Section 3: Cyclic State Machines in LangGraph
+Unlike Directed Acyclic Graphs (DAGs) like standard LangChain LCEL chains, LangGraph allows cyclic graphs with state loops. Agents can inspect generated text, calculate self-groundedness scores, and re-enter generation loops if hallucinations are detected.
